@@ -8,6 +8,7 @@ ROS Gazebo robot simulation
 
 # Usage
 - clone this project
+- 'catkin_init_workspace' in src dir
 - 'catkin_make' in root dir
 - 'source ~/<YourWorkspace>/devel/setup.bash' in every terminal
 - 'echo "source ~/<YourWorkspace>/devel/setup.bash" >> ~/.bashrc', then 'source ~/.bashrc' for current terminal
