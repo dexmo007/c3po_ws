@@ -1,0 +1,8 @@
+prefix=/home/dexmo/git/ros/c3po_ws/devel
+
+Name: c3po_scripts
+Description: Description of c3po_scripts
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/dexmo/git/ros/c3po_ws/devel/lib 
+Requires: 
