@@ -36,84 +36,97 @@
     <collision>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
       <geometry>
-	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
-      </geometry>
-    </collision>
+       <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+     </geometry>
+   </collision>
 
-    <visual>
-      <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
-      <geometry>
-	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
-      </geometry>
-      <material name="orange"/>
-    </visual>
+   <visual>
+    <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
+    <geometry>
+     <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+   </geometry>
+   <material name="orange"/>
+ </visual>
 
-    <inertial>
-      <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
-      <mass value="${chassisMass}"/>
-      <box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
-    </inertial>
-  </link>
+ <inertial>
+  <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
+  <mass value="${chassisMass}"/>
+  <box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
+</inertial>
+</link>
 
-  <joint name="fixed" type="fixed">
-    <parent link="chassis"/>
-    <child link="caster_wheel"/>
+<joint name="fixed" type="fixed">
+  <parent link="chassis"/>
+  <child link="caster_wheel"/>
+</joint>
+
+<link name="caster_wheel">
+
+  <collision>
+    <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
+    <geometry>
+     <sphere radius="${casterRadius}"/>
+   </geometry>
+ </collision>
+
+ <visual> 
+  <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
+  <geometry>
+   <sphere radius="${casterRadius}"/>
+ </geometry>
+</visual>
+
+<inertial>
+  <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
+  <mass value="${casterMass}"/>
+  <sphere_inertia m="${casterMass}" r="${casterRadius}"/>
+</inertial>
+</link>
+
+
+<wheel lr="left" tY="-1"/>
+<wheel lr="right" tY="1"/>
+
+<joint name="camera_joint" type="fixed">
+  <origin xyz="${-cameraSize+chassisLength/2} 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 0 0"/>
+  <parent link="chassis"/>
+  <child link="camera"/>
+</joint>
+
+<link name="camera">
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+     <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+   </geometry>
+ </collision>
+
+ <visual>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <geometry>
+   <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+ </geometry>
+ <material name="blue"/>
+</visual>
+
+<inertial>
+  <mass value="${cameraMass}" />
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
+</inertial>
+</link>
+
+<!-- FRONT LASER -->
+<xacro:include filename="$(find mybot_description)/urdf/sick_lms1xx_mount.urdf.xacro" />
+<sick_lms1xx_mount prefix="front"
+ topic="mybot/front_laser/scan"/>
+
+ <joint name="front_laser_mount_joint" type="fixed">
+  <origin xyz="0 0 0"
+    rpy="0 0 0" />
+    <!--parent link="front_mount" />-->
+    <parent link="camera" />
+    <child link="front_laser_mount" />
   </joint>
-
-  <link name="caster_wheel">
-
-    <collision>
-      <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
-      <geometry>
-	<sphere radius="${casterRadius}"/>
-      </geometry>
-    </collision>
-  
-    <visual> 
-      <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
-      <geometry>
-	<sphere radius="${casterRadius}"/>
-      </geometry>
-    </visual>
-
-    <inertial>
-      <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
-      <mass value="${casterMass}"/>
-      <sphere_inertia m="${casterMass}" r="${casterRadius}"/>
-    </inertial>
-  </link>
-
-
-  <wheel lr="left" tY="-1"/>
-  <wheel lr="right" tY="1"/>
-
-  <joint name="camera_joint" type="fixed">
-    <origin xyz="${-cameraSize+chassisLength/2} 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 0 0"/>
-    <parent link="chassis"/>
-    <child link="camera"/>
-  </joint>
-
-  <link name="camera">
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
-      </geometry>
-    </collision>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
-      </geometry>
-      <material name="blue"/>
-    </visual>
-
-    <inertial>
-      <mass value="${cameraMass}" />
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-    </inertial>
-  </link>
 
 </robot>

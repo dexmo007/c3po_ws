@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
 
 
@@ -31,5 +32,12 @@
 
   <!-- ros_control mybot launch file -->
   <include file="$(find mybot_control)/launch/mybot_control.launch" /> 
+
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain"
+      name="laser_filter_front">
+    <rosparam command="load" file="$(find mybot_gazebo)/launch/laserscan_filter_front.yaml" />
+    <remap from="scan" to="mybot/front_laser/scan" />
+    <remap from="scan_filtered" to="mybot/front_laser/scan_filtered" />
+  </node>
 
 </launch>
