@@ -5,6 +5,7 @@ ROS Gazebo robot simulation
 - sudo apt-get install ros-kinetic-full-desktop
 - sudo apt-get install ros-kinetic-ros-control ros-kinetic-ros-controllers
 - sudo apt-get install ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control
+- sudo apt-get install ros-kinetic-lms1xx	//for range scan laser
 
 # Usage
 - clone this project
