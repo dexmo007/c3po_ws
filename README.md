@@ -67,6 +67,53 @@ go to mybot_description/urdf/macros.xarco
       		<name>gas_station</name>
       		<pose>-2.0 7.0 0 0 0 0</pose>
     	</include>
+		
+		
+#Advanced
+This part of the tutorial is for adding a front laser and using the data we get from it to automate driving
+
+1. add a description file for the laser mount in our case lms1xx
+	- you can clone the file from https://github.com/jackal/jackal/blob/indigo-devel/jackal_description/urdf/accessories/sick_lms1xx_mount.urdf.xacro
+	- add <xacro:property name="cameraSize" value="0.05"/>
+		  <xacro:property name="cameraMass" value="0.1"/>
+	- remove the <visual> brackets
+	
+2. in mybot.xacro add the front laser
+	- the code you need to include:
+	
+		<!-- FRONT LASER -->
+		<xacro:include filename="$(find mybot_description)/urdf/sick_lms1xx_mount.urdf.xacro" />
+		<sick_lms1xx_mount prefix="front"
+			topic="mybot/front_laser/scan"/>
+ 
+		<joint name="front_laser_mount_joint" type="fixed">
+			<origin xyz="0 0 0"  rpy="0 0 0" />
+			<!--parent link="front_mount" />-->
+    		<parent link="camera" />
+    		<child link="front_laser_mount" />
+		</joint>
+		
+now the laser is ready for use. At the moment it scans a wide radius which we do not want to use so we set a filter to the laser
+
+1. add filter to mybot_world.launch
+	
+	<node pkg="laser_filters" type="scan_to_scan_filter_chain"
+	   name="laser_filter_front">
+		<rosparam command="load" file="$(find mybot_gazebo)/launch/laserscan_filter_front.yaml" />
+		<remap from="scan" to="mybot/front_laser/scan" />
+		<remap from="scan_filtered" to="mybot/front_laser/scan_filtered" />
+   </node>
+   
+2. describe the filter we need in a yaml file
+
+	scan_filter_chain:
+	- name: laser_cutoff_front
+	type: laser_filters/LaserScanAngularBoundsFilter
+	params:
+		lower_angle: -0.78539816339
+		upper_angle: 0.78539816339 
+		
+now when the robot is running we can subscribe to the topic mybot/front_laser/scan_filtered and we get values for the laser in front of the robot
 
 
 create new package for scripts
