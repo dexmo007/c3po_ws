@@ -69,7 +69,7 @@ go to mybot_description/urdf/macros.xarco
     	</include>
 		
 		
-#Advanced
+# Laser Scan
 This part of the tutorial is for adding a front laser and using the data we get from it to automate driving
 
 1. add a description file for the laser mount in our case lms1xx
@@ -117,3 +117,7 @@ now when the robot is running we can subscribe to the topic mybot/front_laser/sc
 
 
 create new package for scripts
+
+# Autonomous Controller (control.py)
+On every laser scan tick, the central and peripheral ranges are checked. If a certain threshold is crossed, the corresponding angular velocity to counteract is added to the current msg, else the robot just goes straight forward.
+--> to be optimized for all situations, to be merged with Miron's approach (autonom.py)
