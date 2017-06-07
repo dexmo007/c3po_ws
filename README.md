@@ -2,34 +2,40 @@
 ROS Gazebo robot simulation
 
 # Prerequisites
-- sudo apt-get install ros-kinetic-full-desktop
-- sudo apt-get install ros-kinetic-ros-control ros-kinetic-ros-controllers
-- sudo apt-get install ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control
-- sudo apt-get install ros-kinetic-lms1xx	//for range scan laser
+```
+sudo apt-get install ros-kinetic-full-desktop
+sudo apt-get install ros-kinetic-ros-control ros-kinetic-ros-controllers
+sudo apt-get install ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control
+sudo apt-get install ros-kinetic-lms1xx	//for range scan laser
+```
 
 # Usage
 - clone this project
 - 'catkin_init_workspace' in src dir
 - 'catkin_make' in root dir
-- 'source ~/<YourWorkspace>/devel/setup.bash' in every terminal
-- 'echo "source ~/<YourWorkspace>/devel/setup.bash" >> ~/.bashrc', then 'source ~/.bashrc' for current terminal
+- 'source ~/PATH_TO_WS/devel/setup.bash' in every terminal
+- 'echo "source ~/PATH_TO_WS/devel/setup.bash" >> ~/.bashrc', then 'source ~/.bashrc' for current terminal
 - run using 'roslaunch mybot_gazebo mybot_world.launch'
+- use turtlesim teleop script for manual control
+    `rosrun -tYFrame= ...`
 
 
 # Setup from sample project
-Follow the isntallation from http://www.generationrobots.com/blog/en/2015/02/robotic-simulation-scenarios-with-gazebo-and-ros/
+
+## Step 1: Install sample project
+Follow [this](http://www.generationrobots.com/blog/en/2015/02/robotic-simulation-scenarios-with-gazebo-and-ros/) installation.
 
 Download from GitHub
 clone into src/
 
 Setup:
 
-in new console always do: source ~/<YourWorkspace>/devel/setup.bash OR add the command to ~/.bashrc
+in new console always do: `source ~/PATH_TO_WS/devel/setup.bash` or add the command to ~/.bashrc
 
-1. in src -->workspace init
-2. im workspace --> catkin_make
-3. sudo apt-get install ros-kinetic-ros-control ros-kinetic-ros-controllers
-4. sudo apt-get install ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control
+1. in src folder --> `workspace init`
+2. im workspace root folder --> `catkin_make`
+
+## Step 2: Fixes due to Migration to ROS Kinetic
 
 go to mybot_description/urdf/macros.xarco
 
@@ -60,6 +66,9 @@ go to mybot_description/urdf/macros.xarco
 
 	--> this removes the gap between the robot and ground plane
 
+x. Setup environment:
+Option 1:
+
 	add a gas station:
 	mybot.world add:
 		<include>
@@ -67,6 +76,14 @@ go to mybot_description/urdf/macros.xarco
       		<name>gas_station</name>
       		<pose>-2.0 7.0 0 0 0 0</pose>
     	</include>
+
+ Option 2:
+
+ replace mybot.world in ~/PATH_TO_WS/src/mybot_gazebo/worlds/ with this file from 
+ https://github.com/jackal/jackal_simulator/blob/indigo-devel/jackal_gazebo/worlds/jackal_race.world
+ (remember renaming it to mybot.world)
+
+
 		
 		
 # Laser Scan
