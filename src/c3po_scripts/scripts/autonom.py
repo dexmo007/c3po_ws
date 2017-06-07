@@ -12,8 +12,8 @@ def rotate(degrees, rechts):
 	speed = 45
 	angle = degrees
 	#Converting from angles to radians
-	angular_speed = speed*2*PI/360
-	relative_angle = angle*2*PI/360
+	angular_speed = speed*PI/180
+	relative_angle = angle*PI/180
 
 	vel_msg.linear.x=0
 	vel_msg.linear.y=0
