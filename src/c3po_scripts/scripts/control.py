@@ -6,6 +6,7 @@ from sensor_msgs.msg import LaserScan
 
 PI = 3.1415926535897
 velocity_publisher = rospy.Publisher('/mybot/cmd_vel', Twist, queue_size=10)
+reverse = False
 
 def rotate(degrees, rechts):
 	vel_msg = Twist()
@@ -72,11 +73,7 @@ def moveStraight(distance):
 	velocity_publisher.publish(vel_msg)
 
 
-def callback(data):
-	#for x in range(0, 1000):
-		#rospy.loginfo("x: %i    %f", x, data.ranges[x]) 
-	
-	
+def callback(data):	
 	#0 = ganz rechts
 	#239 = ganz links
 	# 120 = mitte
@@ -86,7 +83,7 @@ def callback(data):
 
 	msg = Twist()
 
-	msg.linear.x = 0.5
+	msg.linear.x = 1
 
 	msg.linear.y = 0
 	msg.linear.z = 0
@@ -94,8 +91,21 @@ def callback(data):
 	msg.angular.y = 0
 	msg.angular.z = 0
 
-	if (rangeCentral < 5 or rangeRight < 3 or rangeLeft < 3):
+	if (rangeCentral < 2 or rangeRight < 1 or rangeLeft < 1):
+		#print "trigger at %d %d %d" % rangeCentral
 		msg.angular.z = PI/4 if rangeRight < rangeLeft else -PI/4
+	
+	if (rangeCentral < 2):
+		msg.linear.x = 0.5	
+
+	global reverse
+
+	if (reverse or rangeCentral < 0.3):
+		reverse = True
+		msg.linear.x = -0.5
+		msg.angular.z = PI/2 if rangeRight < rangeLeft else -PI/2
+	if (reverse and rangeCentral > 1):
+		reverse = False
 
 	velocity_publisher.publish(msg)
 	
