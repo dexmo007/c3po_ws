@@ -36,7 +36,7 @@
           <geometry>
            <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
           </geometry>
-          <material name="black"/>
+          <material name="Black"/>
         </visual>
 
         <inertial>

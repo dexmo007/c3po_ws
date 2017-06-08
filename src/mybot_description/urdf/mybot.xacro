@@ -21,6 +21,9 @@
   <xacro:property name="cameraSize" value="0.05"/>
   <xacro:property name="cameraMass" value="0.1"/>
 
+  <xacro:arg name="robot_color" default="Orange" />
+  <xacro:property name="gazebo_robot_color" value="$(arg robot_color)" />
+
   <xacro:include filename="$(find mybot_description)/urdf/mybot.gazebo" />
   <xacro:include filename="$(find mybot_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find mybot_description)/urdf/macros.xacro" />
@@ -45,7 +48,7 @@
     <geometry>
      <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
    </geometry>
-   <material name="orange"/>
+   <material name="$(arg robot_color)"/>
  </visual>
 
  <inertial>
@@ -106,7 +109,7 @@
   <geometry>
    <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
  </geometry>
- <material name="blue"/>
+ <material name="Blue"/>
 </visual>
 
 <inertial>
