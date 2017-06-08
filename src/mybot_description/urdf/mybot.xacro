@@ -10,19 +10,23 @@
   <xacro:property name="chassisWidth" value="0.2"/>
   <xacro:property name="chassisMass" value="50"/>
 
-  <xacro:property name="casterRadius" value="0.05"/>
-  <xacro:property name="casterMass" value="5"/>
+  <xacro:arg name="wheelWidth" default="0.05" />
+  <xacro:arg name="wheelRadius" default="0.1" />
 
-  <xacro:property name="wheelWidth" value="0.05"/>
-  <xacro:property name="wheelRadius" value="0.1"/>
+  <xacro:property name="wheelWidth" value="$(arg wheelWidth)"/>
+  <xacro:property name="wheelRadius" value="$(arg wheelRadius)"/>
   <xacro:property name="wheelPos" value="0.2"/>
-  <xacro:property name="wheelMass" value="5"/>
+  <!-- calculates the mass of a wheel using the mass density from sample project -->
+  <xacro:property name="wheelMass" value="${10000 * wheelRadius * wheelRadius * wheelWidth}"/>
+
+  <xacro:property name="casterRadius" value="${wheelRadius - chassisHeight / 2}"/>
+  <!-- calculates the mass of the caster wheel using the mass density from sample project -->
+  <xacro:property name="casterMass" value="${40000 * casterRadius * casterRadius * casterRadius}"/>
 
   <xacro:property name="cameraSize" value="0.05"/>
   <xacro:property name="cameraMass" value="0.1"/>
 
-  <xacro:arg name="robot_color" default="Orange" />
-  <xacro:property name="gazebo_robot_color" value="$(arg robot_color)" />
+  <xacro:arg name="robot_color" default="Orange"/>
 
   <xacro:include filename="$(find mybot_description)/urdf/mybot.gazebo" />
   <xacro:include filename="$(find mybot_description)/urdf/materials.xacro" />
@@ -66,21 +70,24 @@
 <link name="caster_wheel">
 
   <collision>
-    <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
+    <!--<origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>-->
+    <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius}" rpy="0 0 0"/>
     <geometry>
      <sphere radius="${casterRadius}"/>
    </geometry>
  </collision>
 
  <visual> 
-  <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
+  <!--<origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>-->
+    <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius}" rpy="0 0 0"/>
   <geometry>
    <sphere radius="${casterRadius}"/>
  </geometry>
 </visual>
 
 <inertial>
-  <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
+  <!--<origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>-->
+    <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius}" rpy="0 0 0"/>
   <mass value="${casterMass}"/>
   <sphere_inertia m="${casterMass}" r="${casterRadius}"/>
 </inertial>

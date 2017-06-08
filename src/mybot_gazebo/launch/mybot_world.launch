@@ -9,11 +9,13 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
   <arg name="robot_color" default="Orange" />
+  <arg name="wheelRadius" default="0.1" />
+  <arg name="wheelWidth" default="0.05" />
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param name="robot_description"
 	 command="$(find xacro)/xacro.py '$(find mybot_description)/urdf/mybot.xacro' 
-   robot_color:=$(arg robot_color)" />
+   robot_color:=$(arg robot_color) wheelRadius:=$(arg wheelRadius) wheelWidth:=$(arg wheelWidth)" />
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">

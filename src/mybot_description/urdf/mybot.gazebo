@@ -33,7 +33,7 @@
 </gazebo>
 
  <gazebo reference="chassis">
-  <material>Gazebo/${gazebo_robot_color}</material>
+  <material>Gazebo/$(arg robot_color)</material>
  </gazebo>
 
  <gazebo reference="caster_wheel">
