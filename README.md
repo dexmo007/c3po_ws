@@ -109,24 +109,39 @@ This part of the tutorial is for adding a front laser and using the data we get 
 
 1. add a description file for the laser mount in our case lms1xx
 	- you can clone the file from https://github.com/jackal/jackal/blob/indigo-devel/jackal_description/urdf/accessories/sick_lms1xx_mount.urdf.xacro
-	- add <xacro:property name="cameraSize" value="0.05"/>
-		  <xacro:property name="cameraMass" value="0.1"/>
-	- remove the <visual> brackets
+	- remove the <visual> from the brackets link: 
+	```xml
+	<link name="${prefix}_laser_mount">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://jackal_description/meshes/sick-lms1xx-bracket.stl" />
+        </geometry>
+        <material name="dark_grey" />
+      </visual>
+    </link>
+	```
+	becomes 
+	```xml
+	<link name="${prefix}_laser_mount"></link>
+	```
 	
 2. in mybot.xacro add the front laser
 	- the code you need to include:
-	
-		<!-- FRONT LASER -->
-		<xacro:include filename="$(find mybot_description)/urdf/sick_lms1xx_mount.urdf.xacro" />
-		<sick_lms1xx_mount prefix="front"
-			topic="mybot/front_laser/scan"/>
- 
-		<joint name="front_laser_mount_joint" type="fixed">
-			<origin xyz="0 0 0"  rpy="0 0 0" />
-			<!--parent link="front_mount" />-->
-    		<parent link="camera" />
-    		<child link="front_laser_mount" />
-		</joint>
+	    ```xml
+        <!-- FRONT LASER -->
+       	<xacro:include filename="$(find mybot_description)/urdf/sick_lms1xx_mount.urdf.xacro" />
+       	<sick_lms1xx_mount prefix="front"
+       			topic="mybot/front_laser/scan"/>
+        
+       	<joint name="front_laser_mount_joint" type="fixed">
+       			<origin xyz="0 0 0"  rpy="0 0 0" />
+       			<!--parent link="front_mount" />-->
+           		<parent link="camera" />
+           		<child link="front_laser_mount" />
+       	</joint>
+        ```
+		
 		
 now the laser is ready for use. At the moment it scans a wide radius which we do not want to use so we set a filter to the laser
 

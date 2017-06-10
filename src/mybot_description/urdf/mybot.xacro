@@ -134,7 +134,6 @@
  <joint name="front_laser_mount_joint" type="fixed">
   <origin xyz="0 0 0"
     rpy="0 0 0" />
-    <!--parent link="front_mount" />-->
     <parent link="camera" />
     <child link="front_laser_mount" />
   </joint>
